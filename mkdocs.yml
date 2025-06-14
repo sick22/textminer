@@ -1,0 +1,6 @@
+site_name: textminer-pro-jys
+repo_url: https://github.com/sick22/textminer-pro-jys
+theme:
+  name: material
+plugins:
+  - search
