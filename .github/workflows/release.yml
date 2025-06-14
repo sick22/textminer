@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"          # v0.1.11 같은 태그 푸시 시 트리거
+    push:
+    tags: ["v*"]     
 
 permissions:
   contents: write      # GitHub Release 생성
