@@ -1,21 +1,38 @@
 name: Docs
 
 on:
-  workflow_run:
-    workflows: [CI, Release]
-    types: [completed]
+  push:
+    branches: [main]
+    paths: ["docs/**", "mkdocs.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
-      - run: |
+      - name: Install MkDocs
+        run: |
           pip install mkdocs-material
-          mkdocs gh-deploy --force
+      - name: Build site
+        run: mkdocs build --strict
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
