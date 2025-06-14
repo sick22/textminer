@@ -8,7 +8,7 @@ long_description = (this_dir / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="textminer-pro-jys",
-    version="0.1.7",                             
+    version="0.1.8",                             
     description="Advanced text mining utils",
     long_description=long_description,            
     long_description_content_type="text/markdown",
