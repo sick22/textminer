@@ -1,42 +1,24 @@
 name: Release
-
 on:
   push:
-    push:
-    tags: ["v*"]     
+    tags: ['v*']
 
 permissions:
-  contents: write      # GitHub Release 생성
-  id-token: write      # PyPI OIDC 인증
-  packages: write      # GHCR 쓰려면 (선택)
+  contents: write
+  id-token: write
 
 jobs:
-  build-publish:
+  publish:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-
-      - name: Install build deps
-        run: |
-          python -m pip install -U pip build
-
-      - name: Build sdist & wheel
-        run: python -m build
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          files: dist/*
-
+          python-version: '3.12'
+      - run: python -m pip install -U pip build
+      - run: python -m build
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: dist
-          attestations: false  
+          packages-dir: dist       # ← kebab-case
+          attestations: false
